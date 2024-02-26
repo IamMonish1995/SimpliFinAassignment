@@ -3,7 +3,7 @@ import Trending from "./components/trending";
 import SearchItems from "./components/search";
 import { Tabs } from "antd";
 
-const MainTabs = ({activeKey,setActiveKey}) => {
+const MainTabs = ({ activeKey, setActiveKey }) => {
   let items = [
     {
       label: `Gifs `,
@@ -26,14 +26,12 @@ const MainTabs = ({activeKey,setActiveKey}) => {
     setActiveKey(Key);
   };
 
-
   return (
     <Tabs
-      defaultActiveKey={activeKey || 1}
       centered
       items={items}
       onChange={handleOnChange}
-      activeKey={activeKey}
+      activeKey={activeKey || 1}
     />
   );
 };
