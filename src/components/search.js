@@ -10,6 +10,7 @@ const SearchItems = ({ type }) => {
   const [fetchedData, setFetchedData] = useState();
   const [loading, setloading] = useState(false);
   const [searchText, setSearchText] = useState("cheeseburgers");
+  const [debounceValue, setDebounceValue] = useState(searchText);
 
   const onPageChange = (page) => {
     setCurrentPage(page);
@@ -23,7 +24,11 @@ const SearchItems = ({ type }) => {
   useEffect(() => {
     setloading(true);
     getSearchItemsItems(
-      { limit: pageSize, offset: (currentPage - 1) * pageSize,q:searchText },
+      {
+        limit: pageSize,
+        offset: (currentPage - 1) * pageSize,
+        q: debounceValue,
+      },
       type
     )
       .then((res) => {
@@ -32,12 +37,20 @@ const SearchItems = ({ type }) => {
       .finally(() => {
         setloading(false);
       });
-  }, [currentPage, pageSize,searchText]);
+  }, [currentPage, pageSize, debounceValue, type]);
 
   const onChange = (e) => {
     setSearchText(e.target.value);
   };
 
+  useEffect(() => {
+    let timerId = setTimeout(() => {
+      setDebounceValue(searchText)
+    }, 1000);
+    return () => {
+      clearTimeout(timerId);
+    };
+  }, [searchText]);
   return (
     <>
       <Flex justify="center" vertical align="center" gap="10px">
